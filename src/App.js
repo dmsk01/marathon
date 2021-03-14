@@ -20,7 +20,7 @@ const App = () => {
       <Layout id="cards" title="Cards" colorBg="#e2e2e1">
         <div className="flex">
           {POKEMONS.map((item) => (
-            <PokemonCard key={item.id} {...item} />
+            <PokemonCard key={item.id} name={item.name} img={item.img} id={item.id} type={item.type} values={item.values} />
           ))}
         </div>
       </Layout>
