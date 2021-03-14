@@ -1,17 +1,25 @@
 import styles from "./style.module.css";
 
-const Layout = ({ urlBg, colorBg, descr, title }) => {
+const Layout = ({ urlBg, colorBg, title, children }) => {
+  const sectionStyle = {};
+
+  if (urlBg) {
+    sectionStyle.backgroundImage = `url(${urlBg})`;
+  }
+
+  if (colorBg) {
+    sectionStyle.backgroundColor = colorBg;
+  }
+
   return (
-    <section className={styles.root} style={{ background: `${urlBg ? `url(${urlBg})` : colorBg ? colorBg : "#e3e3e3"}` }}>
+    <section className={styles.root} style={sectionStyle}>
       <div className={styles.wrapper}>
         <article>
           <div className={styles.title}>
             <h3>{title ? title : null}</h3>
             <span className={styles.separator} />
           </div>
-          <div className={(styles.desc, styles.full)}>
-            <p>{descr ? descr : null}</p>
-          </div>
+          <div className={`${styles.desc} ${styles.full}`}>{children ? children : null}</div>
         </article>
       </div>
     </section>
