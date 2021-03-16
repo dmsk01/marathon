@@ -1,4 +1,5 @@
 import { useState } from "react";
+import classNames from "classnames";
 
 import styles from "./style.module.css";
 
@@ -14,15 +15,15 @@ const PokemonCard = ({ name, img, id, type, values }) => {
   return (
     <>
       <div className={styles.root} onClick={clickHandler}>
-        <div className={`${styles.pokemonCard} ${isActive ? styles.active : ""}`}>
+        <div className={classNames(styles.pokemonCard, { [styles.active]: isActive })}>
           <div className={styles.cardFront}>
-            <div className={`${styles.wrap} ${styles.front}`}>
-              <div className={`${styles.pokemon} ${styles[type]}`}>
+            <div className={classNames(styles.wrap, styles.front)}>
+              <div className={classNames(styles.pokemon, styles[type])}>
                 <div className={styles.values}>
-                  <div className={`${styles.count} ${styles.top}`}>{values.top}</div>
-                  <div className={`${styles.count} ${styles.right}`}>{values.right}</div>
-                  <div className={`${styles.count} ${styles.bottom}`}>{values.bottom}</div>
-                  <div className={`${styles.count} ${styles.left}`}>{values.left}</div>
+                  <div className={classNames(styles.count, styles.top)}>{values.top}</div>
+                  <div className={classNames(styles.count, styles.right)}>{values.right}</div>
+                  <div className={classNames(styles.count, styles.bottom)}>{values.bottom}</div>
+                  <div className={classNames(styles.count, styles.left)}>{values.left}</div>
                 </div>
                 <div className={styles.imgContainer}>
                   <img src={img} alt={name} />
@@ -38,7 +39,7 @@ const PokemonCard = ({ name, img, id, type, values }) => {
             </div>
           </div>
           <div className={styles.cardBack}>
-            <div className={`${styles.wrap} ${styles.back}`}>
+            <div className={classNames(styles.wrap, styles.back)}>
               <img src={cardBackSide} alt="Сard Backed" />
             </div>
           </div>

@@ -1,4 +1,5 @@
 import styles from "./style.module.css";
+import classNames from "classnames";
 
 const Layout = ({ urlBg, colorBg, title, children }) => {
   const sectionStyle = {};
@@ -19,7 +20,7 @@ const Layout = ({ urlBg, colorBg, title, children }) => {
             <h3>{title ? title : null}</h3>
             <span className={styles.separator} />
           </div>
-          <div className={`${styles.desc} ${styles.full}`}>{children ? children : null}</div>
+          <div className={classNames(styles.desc, styles.full)}>{children ? children : null}</div>
         </article>
       </div>
     </section>
