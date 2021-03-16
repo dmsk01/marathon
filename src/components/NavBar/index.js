@@ -7,7 +7,7 @@ const NavBar = ({ handelBurgerClick, isActive }) => {
       <nav className={styles.root}>
         <div className={styles.navWrapper}>
           <p className={styles.brand}>LOGO</p>
-          <a onClick={handelBurgerClick} href="#" className={classNames(styles.menuButton, { [styles.active]: isActive })}>
+          <a onClick={handelBurgerClick} href="/#" className={classNames(styles.menuButton, { [styles.active]: isActive })}>
             <span></span>
           </a>
         </div>

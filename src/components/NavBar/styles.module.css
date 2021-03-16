@@ -32,6 +32,7 @@
   height: 22px;
   width: 30px;
   outline: none;
+  display: inline;
 }
 
 .menuButton span,
