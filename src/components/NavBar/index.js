@@ -12,7 +12,6 @@ const NavBar = ({ handelBurgerClick, isActive }) => {
           </a>
         </div>
       </nav>
-      ;
     </>
   );
 };
