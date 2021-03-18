@@ -1,12 +1,18 @@
+import { useState } from "react";
+
+import POKEMONS from "../../pokemons";
+
 const GamePage = ({ onChangePage }) => {
+  const copiedPokemons = JSON.parse(JSON.stringify(POKEMONS));
+  const [cards, setcards] = useState(copiedPokemons);
+
   const handleClick = () => {
-    console.log("go to the home page from game page");
     onChangePage && onChangePage("app");
   };
   return (
     <>
       <div>
-        This is GamePage!!!
+        This is AboutPage!!!
         <button onClick={handleClick}>Go to the Home page!</button>
       </div>
     </>

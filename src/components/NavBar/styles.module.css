@@ -32,14 +32,13 @@
   height: 22px;
   width: 30px;
   outline: none;
-  display: inline;
 }
 
 .menuButton span,
 .menuButton span::before,
 .menuButton span::after {
   position: absolute;
-  content: "";
+  content: '';
   width: 30px;
   height: 3px;
   background: #fafafa;
@@ -50,7 +49,7 @@
   position: relative;
   display: block;
   top: 50%;
-  transform: translate(0, -50%);
+  transform: translate(0,-50%);
 }
 
 .menuButton span::before {
@@ -67,16 +66,16 @@
   background: #f300b4;
 }
 
-.menuButton.active > span {
+.menuButton.active > span  {
   background: transparent;
 }
 
-.menuButton.active > span::before {
+.menuButton.active > span::before  {
   transform: rotate(-225deg);
   top: 0px;
 }
 
-.menuButton.active > span::after {
+.menuButton.active > span::after  {
   transform: rotate(225deg);
   top: 0px;
 }
@@ -86,5 +85,3 @@
     background: #181d23aa;
   }
 }
-
-

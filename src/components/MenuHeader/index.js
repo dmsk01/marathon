@@ -3,17 +3,17 @@ import { useState } from "react";
 import Menu from "../Menu";
 import NavBar from "../NavBar";
 
-const MenuHeader = () => {
+const MenuHeader = ({ bgActive }) => {
   const [isActive, setActive] = useState(false);
 
   const handleClick = () => {
-    setActive(!isActive);
+    setActive((prevState) => !prevState);
   };
 
   return (
     <>
-      <NavBar handelBurgerClick={handleClick} isActive={isActive} />
-      <Menu isActive={isActive} />
+      <NavBar onClick={handleClick} isActive={isActive} bgActive={bgActive} />
+      <Menu isActive={isActive} onClick={handleClick} />
     </>
   );
 };

@@ -3,7 +3,6 @@ import Header from "../../components/Header";
 import Layout from "../../components/Layout";
 import Footer from "../../components/Footer";
 import PokemonCard from "../../components/PokemonCard";
-import MenuHeader from "../../components/MenuHeader";
 
 import firstBg from "../../assets/bg1.jpg";
 import secondBg from "../../assets/bg3.jpg";
@@ -12,12 +11,10 @@ import POKEMONS from "../../pokemons";
 
 const HomePage = ({ onChangePage }) => {
   const handleClickButton = (page) => {
-    console.log("Home page");
     onChangePage && onChangePage(page);
   };
   return (
     <>
-      <MenuHeader />
       <Header title="Pokemon Game!" descr="This is the simple triple triad card game" onClickButton={handleClickButton} />
       <Layout id="rules" title="Game rules" urlBg={firstBg}>
         <p>In the game two players face off against one another, one side playing as "blue", the other as "red" on a 3x3 grid. Each player has five cards in a hand and the aim is to capture the opponent's cards by turning them into the player's own color of red or blue.</p>
