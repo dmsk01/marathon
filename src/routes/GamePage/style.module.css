@@ -1,0 +1,15 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.gameHeader {
+  margin: 0px 0px 80px 0px;
+  text-align: center;
+}
+
+.gameHeader p {
+  font-size: 32px;
+  margin: 0px 0px 30px 0px;
+}

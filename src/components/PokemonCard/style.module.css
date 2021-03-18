@@ -220,3 +220,16 @@
   transform: translate(-50%, 0);
   bottom: 0;
 }
+
+.pokemonCard.active {
+  animation: flipFront 1000ms 300ms forwards;
+}
+
+@keyframes flipFront {
+  from {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}

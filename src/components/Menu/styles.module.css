@@ -144,11 +144,15 @@
 }
 
 .menuContainer ul li a {
+  display: flex;
   font-size: 3rem;
   padding-left: 0.5rem;
+  margin: 0px 0px 1.5rem 0px;
 }
 
 .menuContainer ul li a::after {
+  display: inline-block;
+  margin-left: 1rem;
   content: " »";
   font-size: 2.5rem;
   color: transparent;

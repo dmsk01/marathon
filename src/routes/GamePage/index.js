@@ -1,19 +1,41 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+
+import PokemonCard from "../../components/PokemonCard";
 
 import POKEMONS from "../../pokemons";
 
-const GamePage = ({ onChangePage }) => {
-  const copiedPokemons = JSON.parse(JSON.stringify(POKEMONS));
-  const [cards, setcards] = useState(copiedPokemons);
+import styles from "./style.module.css";
 
-  const handleClick = () => {
-    onChangePage && onChangePage("app");
+const GamePage = () => {
+  const [cards, setCards] = useState(JSON.parse(JSON.stringify(POKEMONS)));
+
+  const history = useHistory();
+
+  const handleButtonClick = () => {
+    history.push("/home");
+  };
+
+  const handleCardClick = (id) => {
+    setCards((prevState) =>
+      prevState.filter((card) => {
+        if (card.id === id) {
+          card.active = !card.active;
+        }
+        return card.id;
+      })
+    );
   };
   return (
     <>
-      <div>
-        This is AboutPage!!!
-        <button onClick={handleClick}>Go to the Home page!</button>
+      <div className={styles.gameHeader}>
+        <p>This is GamePage!!!</p>
+        <button onClick={handleButtonClick}>Go to the Home page!</button>
+      </div>
+      <div className={styles.flex}>
+        {cards.map((item) => (
+          <PokemonCard isActive={item.active} onClick={handleCardClick} key={item.id} name={item.name} img={item.img} id={item.id} type={item.type} values={item.values} />
+        ))}
       </div>
     </>
   );
