@@ -7,6 +7,7 @@ import GamePage from "./routes/GamePage";
 import HomePage from "./routes/HomePage";
 import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
+import NotFoundPage from "./routes/NotFound";
 
 import styles from "./styles.module.css";
 
@@ -17,7 +18,7 @@ const App = () => {
 
   return (
     <Switch>
-      <Route path="/404" render={() => <h1>404 Not found</h1>} />
+      <Route path="/404" component={NotFoundPage} />
       <Route>
         <>
           <MenuHeader bgActive={!isHomePage} />
