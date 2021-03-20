@@ -7,6 +7,7 @@ const Header = ({ title, descr, onClickButton }) => {
   const handleClick = () => {
     history.push("/game");
   };
+
   return (
     <>
       <header className={styles.root}>

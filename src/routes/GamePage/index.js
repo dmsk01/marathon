@@ -17,14 +17,10 @@ const GamePage = () => {
   };
 
   const handleCardClick = (id) => {
-    setCards((prevState) =>
-      prevState.filter((card) => {
-        if (card.id === id) {
-          card.active = !card.active;
-        }
-        return card.id;
-      })
-    );
+    setCards(prevState=>prevState.map(
+      item => item.id === id ? {
+      ...item, active:!item.active}:item
+    ))
   };
   return (
     <>
