@@ -1,37 +1,65 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import database from "../../services/firebase";
 
 import PokemonCard from "../../components/PokemonCard";
-
-import POKEMONS from "../../pokemons";
 
 import styles from "./style.module.css";
 
 const GamePage = () => {
-  const [cards, setCards] = useState(JSON.parse(JSON.stringify(POKEMONS)));
+  const [pokemons, setPokemons] = useState({}); //We get empty obj by default and then load if from firebase
 
-  const history = useHistory();
+  useEffect(() => {
+    getPokemonsData();
+  }, [pokemons]);
 
-  const handleButtonClick = () => {
-    history.push("/home");
-  };
+  function writeUserData(id, isActive) {
+    database.ref("pokemons/" + id).update(
+      {
+        active: !isActive,
+      },
+      (error) => {
+        if (error) {
+          console.error(error);
+        } else {
+          //getPokemonsData();    //in this case remove dependencies from useEffect
+          console.log("Data saved successfully!");
+        }
+      }
+    );
+  }
 
-  const handleCardClick = (id) => {
-    setCards(prevState=>prevState.map(
-      item => item.id === id ? {
-      ...item, active:!item.active}:item
-    ))
+  function getPokemonsData() {
+    database.ref("pokemons").once("value", (snapshot) => {
+      setPokemons(snapshot.val());
+    });
+  }
+
+  const handleCardClick = (id, isActive) => {
+    setPokemons((prevState) => {
+      return Object.entries(prevState).reduce((acc, item) => {
+        const pokemon = { ...item[1] };
+        if (pokemon.id === id) {
+          pokemon.active = isActive;
+          writeUserData(item[0], pokemon.active);
+        }
+        acc[item[0]] = pokemon;
+        return acc;
+      }, {});
+    });
   };
   return (
     <>
       <div className={styles.gameHeader}>
-        <p>This is GamePage!!!</p>
-        <button onClick={handleButtonClick}>Go to the Home page!</button>
+        <p>Choose the card!!!</p>
       </div>
       <div className={styles.flex}>
-        {cards.map((item) => (
-          <PokemonCard isActive={item.active} onClick={handleCardClick} key={item.id} name={item.name} img={item.img} id={item.id} type={item.type} values={item.values} />
+        {Object.entries(pokemons).map(([key, { name, img, id, type, values, active }]) => (
+          <PokemonCard onClick={handleCardClick} isActive={active} key={key} keyId={key} name={name} img={img} id={id} type={type} values={values} />
         ))}
+      </div>
+      <div className={styles.gameHeader}>
+        <button>Add new pokemon</button>
       </div>
     </>
   );

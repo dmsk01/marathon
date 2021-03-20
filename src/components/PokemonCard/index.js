@@ -6,7 +6,7 @@ import cardBackSide from "./assets/card-back-side.jpg";
 
 const PokemonCard = ({ name, img, id, type, values, onClick, isActive = false }) => {
   const clickHandler = () => {
-    onClick && onClick(id);
+    onClick && onClick(id, isActive);
   };
 
   return (
