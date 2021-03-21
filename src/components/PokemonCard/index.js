@@ -4,9 +4,9 @@ import styles from "./style.module.css";
 
 import cardBackSide from "./assets/card-back-side.jpg";
 
-const PokemonCard = ({ name, img, id, type, values, onClick, isActive = false }) => {
+const PokemonCard = ({ name, img, id, type, values, onClick, keyId, isActive = false }) => {
   const clickHandler = () => {
-    onClick && onClick(id, isActive);
+    onClick && onClick(keyId, isActive);
   };
 
   return (

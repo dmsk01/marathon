@@ -11,18 +11,18 @@ const GamePage = () => {
 
   useEffect(() => {
     getPokemonsData();
-  }, [pokemons]);
+  });
 
-  function writeUserData(id, isActive) {
-    database.ref("pokemons/" + id).update(
+  function writePokemonData(keyId, active) {
+    database.ref("pokemons/" + keyId).update(
       {
-        active: !isActive,
+        active: !active,
       },
       (error) => {
         if (error) {
           console.error(error);
         } else {
-          //getPokemonsData();    //in this case remove dependencies from useEffect
+          getPokemonsData(); //in this case remove dependencies from useEffect
           console.log("Data saved successfully!");
         }
       }
@@ -35,19 +35,45 @@ const GamePage = () => {
     });
   }
 
-  const handleCardClick = (id, isActive) => {
+  const handleCardClick = (keyId, isActive) => {
     setPokemons((prevState) => {
       return Object.entries(prevState).reduce((acc, item) => {
         const pokemon = { ...item[1] };
-        if (pokemon.id === id) {
+        if (item[0] === keyId) {
           pokemon.active = isActive;
-          writeUserData(item[0], pokemon.active);
+          writePokemonData(item[0], isActive);
         }
         acc[item[0]] = pokemon;
         return acc;
       }, {});
     });
   };
+
+  function createNewPokemon() {
+    const randomCardIndex = Math.trunc(Math.random() * Object.keys(pokemons).length);
+    const randomCard = pokemons[Object.keys(pokemons)[randomCardIndex]];
+    randomCard.active = false;
+    return randomCard;
+  }
+
+  function addPokemonToDatabase() {
+    const card = createNewPokemon();
+
+    const newCardKey = database.ref().child("pokemons").push().key;
+
+    let dataToCreate = {};
+    dataToCreate[newCardKey] = card;
+
+    database.ref("pokemons").update(dataToCreate, (error) => {
+      if (error) {
+        console.error(error);
+      } else {
+        getPokemonsData(); //in this case remove dependencies from useEffect
+        console.log("Data saved successfully!");
+      }
+    });
+  }
+
   return (
     <>
       <div className={styles.gameHeader}>
@@ -59,7 +85,7 @@ const GamePage = () => {
         ))}
       </div>
       <div className={styles.gameHeader}>
-        <button>Add new pokemon</button>
+        <button onClick={addPokemonToDatabase}>Add new pokemon</button>
       </div>
     </>
   );
