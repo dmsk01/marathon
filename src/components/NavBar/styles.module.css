@@ -20,10 +20,9 @@
   padding: 0 2rem;
 }
 
-.root .brand {
-  font-size: 1.6rem;
-  color: #fafafa;
-  cursor: default;
+.root .brand img {
+  width: 80px;
+  height: 28px;
 }
 
 /***** Menu Button *****/
@@ -38,10 +37,11 @@
 .menuButton span::before,
 .menuButton span::after {
   position: absolute;
-  content: '';
+  content: "";
   width: 30px;
   height: 3px;
   background: #fafafa;
+  box-shadow: 0px 1px 3px #000;
   transition: 500ms cubic-bezier(0.77, 0, 0.175, 1);
 }
 
@@ -49,7 +49,7 @@
   position: relative;
   display: block;
   top: 50%;
-  transform: translate(0,-50%);
+  transform: translate(0, -50%);
 }
 
 .menuButton span::before {
@@ -66,16 +66,16 @@
   background: #f300b4;
 }
 
-.menuButton.active > span  {
+.menuButton.active > span {
   background: transparent;
 }
 
-.menuButton.active > span::before  {
+.menuButton.active > span::before {
   transform: rotate(-225deg);
   top: 0px;
 }
 
-.menuButton.active > span::after  {
+.menuButton.active > span::after {
   transform: rotate(225deg);
   top: 0px;
 }

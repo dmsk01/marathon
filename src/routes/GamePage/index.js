@@ -1,37 +1,92 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import database from "../../services/firebase";
 
 import PokemonCard from "../../components/PokemonCard";
-
-import POKEMONS from "../../pokemons";
 
 import styles from "./style.module.css";
 
 const GamePage = () => {
-  const [cards, setCards] = useState(JSON.parse(JSON.stringify(POKEMONS)));
+  const [pokemons, setPokemons] = useState({}); //We get empty obj by default and then load if from firebase
 
-  const history = useHistory();
+  useEffect(() => {
+    getPokemonsData();
+  }, []);
 
-  const handleButtonClick = () => {
-    history.push("/home");
+  function writePokemonData(keyId, active) {
+    database.ref("pokemons/" + keyId).update(
+      {
+        active: !active,
+      },
+      (error) => {
+        if (error) {
+          console.error(error);
+        } else {
+          //getPokemonsData();
+
+          console.log("Data saved successfully!");
+        }
+      }
+    );
+  }
+
+  function getPokemonsData() {
+    database.ref("pokemons").on("value", (snapshot) => {
+      setPokemons(snapshot.val());
+    });
+  }
+
+  const handleCardClick = (keyId, isActive) => {
+    setPokemons((prevState) => {
+      return Object.entries(prevState).reduce((acc, item) => {
+        const pokemon = { ...item[1] };
+        if (item[0] === keyId) {
+          pokemon.active = isActive;
+          writePokemonData(item[0], isActive);
+        }
+        acc[item[0]] = pokemon;
+        return acc;
+      }, {});
+    });
   };
 
-  const handleCardClick = (id) => {
-    setCards(prevState=>prevState.map(
-      item => item.id === id ? {
-      ...item, active:!item.active}:item
-    ))
-  };
+  function createNewPokemon() {
+    const randomCardIndex = Math.trunc(Math.random() * Object.keys(pokemons).length);
+    const randomCard = { ...Object.values(pokemons)[randomCardIndex] };
+    randomCard.active = false;
+    return randomCard;
+  }
+
+  function addPokemonToDatabase() {
+    const card = createNewPokemon();
+
+    const newCardKey = database.ref().child("pokemons").push().key;
+
+    let dataToCreate = {};
+    dataToCreate[newCardKey] = card;
+
+    database.ref("pokemons").update(dataToCreate, (error) => {
+      if (error) {
+        console.error(error);
+      } else {
+        //getPokemonsData(); //in this case remove dependencies from useEffect
+        console.log("Pokemon added successfully!");
+      }
+    });
+  }
+
   return (
     <>
       <div className={styles.gameHeader}>
-        <p>This is GamePage!!!</p>
-        <button onClick={handleButtonClick}>Go to the Home page!</button>
+        <p>Choose the card!!!</p>
       </div>
       <div className={styles.flex}>
-        {cards.map((item) => (
-          <PokemonCard isActive={item.active} onClick={handleCardClick} key={item.id} name={item.name} img={item.img} id={item.id} type={item.type} values={item.values} />
+        {Object.entries(pokemons).map(([key, { name, img, id, type, values, active }]) => (
+          <PokemonCard onClick={handleCardClick} isActive={active} key={key} keyId={key} name={name} img={img} id={id} type={type} values={values} />
         ))}
+      </div>
+      <div className={styles.gameHeader}>
+        <button onClick={addPokemonToDatabase}>Add new pokemon</button>
       </div>
     </>
   );
