@@ -11,7 +11,7 @@ const GamePage = () => {
 
   useEffect(() => {
     getPokemonsData();
-  });
+  }, []);
 
   function writePokemonData(keyId, active) {
     database.ref("pokemons/" + keyId).update(
@@ -22,7 +22,8 @@ const GamePage = () => {
         if (error) {
           console.error(error);
         } else {
-          getPokemonsData(); //in this case remove dependencies from useEffect
+          //getPokemonsData();
+
           console.log("Data saved successfully!");
         }
       }
@@ -30,7 +31,7 @@ const GamePage = () => {
   }
 
   function getPokemonsData() {
-    database.ref("pokemons").once("value", (snapshot) => {
+    database.ref("pokemons").on("value", (snapshot) => {
       setPokemons(snapshot.val());
     });
   }
@@ -51,7 +52,7 @@ const GamePage = () => {
 
   function createNewPokemon() {
     const randomCardIndex = Math.trunc(Math.random() * Object.keys(pokemons).length);
-    const randomCard = pokemons[Object.keys(pokemons)[randomCardIndex]];
+    const randomCard = { ...Object.values(pokemons)[randomCardIndex] };
     randomCard.active = false;
     return randomCard;
   }
@@ -68,8 +69,8 @@ const GamePage = () => {
       if (error) {
         console.error(error);
       } else {
-        getPokemonsData(); //in this case remove dependencies from useEffect
-        console.log("Data saved successfully!");
+        //getPokemonsData(); //in this case remove dependencies from useEffect
+        console.log("Pokemon added successfully!");
       }
     });
   }
