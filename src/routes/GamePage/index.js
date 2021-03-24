@@ -1,94 +1,43 @@
-import { useState, useEffect } from "react";
+import { useRouteMatch, Route, Switch } from "react-router-dom";
 
-import database from "../../services/firebase";
+import BoardPage from "./routes/Board";
+import FinishPage from "./routes/Finish";
+import StartPage from "./routes/Start";
 
-import PokemonCard from "../../components/PokemonCard";
-
-import styles from "./style.module.css";
+import { PokemonContext } from "../../context/pokemonContext";
+import { useState } from "react";
 
 const GamePage = () => {
-  const [pokemons, setPokemons] = useState({}); //We get empty obj by default and then load if from firebase
+  const [selectedPokemons, setSelectedPokemons] = useState({});
 
-  useEffect(() => {
-    getPokemonsData();
-  }, []);
+  const match = useRouteMatch();
 
-  function writePokemonData(keyId, active) {
-    database.ref("pokemons/" + keyId).update(
-      {
-        active: !active,
-      },
-      (error) => {
-        if (error) {
-          console.error(error);
-        } else {
-          //getPokemonsData();
-
-          console.log("Data saved successfully!");
-        }
+  const handleSelectedPokemons = (key, pokemon) => {
+    setSelectedPokemons((prevState) => {
+      if (prevState[key]) {
+        const copyState = { ...prevState };
+        delete copyState[key];
+        return copyState;
       }
-    );
-  }
-
-  function getPokemonsData() {
-    database.ref("pokemons").on("value", (snapshot) => {
-      setPokemons(snapshot.val());
-    });
-  }
-
-  const handleCardClick = (keyId, isActive) => {
-    setPokemons((prevState) => {
-      return Object.entries(prevState).reduce((acc, item) => {
-        const pokemon = { ...item[1] };
-        if (item[0] === keyId) {
-          pokemon.active = isActive;
-          writePokemonData(item[0], isActive);
-        }
-        acc[item[0]] = pokemon;
-        return acc;
-      }, {});
+      return {
+        ...prevState,
+        [key]: pokemon,
+      };
     });
   };
-
-  function createNewPokemon() {
-    const randomCardIndex = Math.trunc(Math.random() * Object.keys(pokemons).length);
-    const randomCard = { ...Object.values(pokemons)[randomCardIndex] };
-    randomCard.active = false;
-    return randomCard;
-  }
-
-  function addPokemonToDatabase() {
-    const card = createNewPokemon();
-
-    const newCardKey = database.ref().child("pokemons").push().key;
-
-    let dataToCreate = {};
-    dataToCreate[newCardKey] = card;
-
-    database.ref("pokemons").update(dataToCreate, (error) => {
-      if (error) {
-        console.error(error);
-      } else {
-        //getPokemonsData(); //in this case remove dependencies from useEffect
-        console.log("Pokemon added successfully!");
-      }
-    });
-  }
-
   return (
-    <>
-      <div className={styles.gameHeader}>
-        <p>Choose the card!!!</p>
-      </div>
-      <div className={styles.flex}>
-        {Object.entries(pokemons).map(([key, { name, img, id, type, values, active }]) => (
-          <PokemonCard onClick={handleCardClick} isActive={active} key={key} keyId={key} name={name} img={img} id={id} type={type} values={values} />
-        ))}
-      </div>
-      <div className={styles.gameHeader}>
-        <button onClick={addPokemonToDatabase}>Add new pokemon</button>
-      </div>
-    </>
+    <PokemonContext.Provider
+      value={{
+        pokemons: selectedPokemons,
+        onSelectedPokemons: handleSelectedPokemons,
+      }}
+    >
+      <Switch>
+        <Route path={`${match.path}/`} exact component={StartPage} />
+        <Route path={`${match.path}/board`} component={BoardPage} />
+        <Route path={`${match.path}/finish`} component={FinishPage} />
+      </Switch>
+    </PokemonContext.Provider>
   );
 };
 
