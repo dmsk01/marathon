@@ -6,9 +6,9 @@ import classNames from "classnames";
 const Menu = ({ onClick, isActive }) => {
   const LINKS = [
     { title: "HOME", to: "/" },
-    { title: "GAME", to: "game" },
-    { title: "ABOUT", to: "about" },
-    { title: "CONTACT", to: "contact" },
+    { title: "GAME", to: "/game" },
+    { title: "ABOUT", to: "/about" },
+    { title: "CONTACT", to: "/contact" },
   ];
   return (
     <>

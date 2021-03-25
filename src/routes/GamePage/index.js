@@ -1,4 +1,4 @@
-import { useRouteMatch, Route, Switch } from "react-router-dom";
+import { useRouteMatch, Route, Switch, Redirect } from "react-router-dom";
 
 import BoardPage from "./routes/Board";
 import FinishPage from "./routes/Finish";
@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const GamePage = () => {
   const [selectedPokemons, setSelectedPokemons] = useState({});
+  const [receivedPlayer2Pokemons, setReceivedPlayer2Pokemons] = useState({});
 
   const match = useRouteMatch();
 
@@ -25,17 +26,34 @@ const GamePage = () => {
       };
     });
   };
+
+  const handleReceivedPokemon = (pokemons) => {
+    setReceivedPlayer2Pokemons(() => {
+      return {
+        ...pokemons,
+      };
+    });
+  };
+
+  const handleClearContext = () => {
+    setSelectedPokemons({});
+    setReceivedPlayer2Pokemons({})
+  }
   return (
     <PokemonContext.Provider
       value={{
         pokemons: selectedPokemons,
         onSelectedPokemons: handleSelectedPokemons,
+        player2Pokemons: receivedPlayer2Pokemons,
+        onReceivePokemons: handleReceivedPokemon,
+        onClearContext: handleClearContext,
       }}
     >
       <Switch>
         <Route path={`${match.path}/`} exact component={StartPage} />
         <Route path={`${match.path}/board`} component={BoardPage} />
         <Route path={`${match.path}/finish`} component={FinishPage} />
+        <Route render={() => <Redirect to="/404" />} />
       </Switch>
     </PokemonContext.Provider>
   );
