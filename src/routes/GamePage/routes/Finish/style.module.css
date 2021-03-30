@@ -5,6 +5,17 @@
   align-items: center;
   width: 100%;
 }
+.flex > * {
+  margin: 0 10px;
+}
+
+.endGame {
+  font-size: 20px;
+}
+
+.endGame p {
+  margin: 0px 0px 20px 0px;
+}
 
 .wrapper {
   text-align: center;

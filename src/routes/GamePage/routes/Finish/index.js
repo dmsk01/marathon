@@ -3,8 +3,6 @@ import { useHistory } from "react-router-dom";
 import { PokemonContext } from "../../../../context/pokemonContext";
 import { FireBaseContext } from "../../../../context/firebaseContext";
 
-import Firebase from "../../../../services/firebase";
-
 import PokemonCard from "../../../../components/PokemonCard";
 
 import styles from "./style.module.css";
@@ -17,16 +15,14 @@ const FinishPage = () => {
 
   const handleCardClick = (key) => {
     const pokemonToAdd = { ...pokemonContext.player2Pokemons[key] };
-    //setSelectedPokemon(pokemonToAdd);
     setSelectedPokemon({
       ...pokemonToAdd,
       isSelected: !pokemonToAdd.isSelected,
     });
-    console.log(selectedPokemon);
   };
 
   const handleEndGame = () => {
-    selectedPokemon && firebase.addPokemon(selectedPokemon);
+    pokemonContext.isWin === "win" && selectedPokemon && firebase.addPokemon(selectedPokemon);
     pokemonContext.onClearContext();
     history.push("/game");
   };
@@ -39,7 +35,8 @@ const FinishPage = () => {
             <PokemonCard key={key} keyId={key} name={name} img={img} id={id} type={type} values={values} active={true} className={styles.card} />
           ))}
         </div>
-        <div>
+        <div className={styles.endGame}>
+          {pokemonContext.isWin === "win" && <p>Choose one enemy card to capture</p>}
           <button onClick={handleEndGame}>End Game</button>
         </div>
         <div>

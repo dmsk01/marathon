@@ -14,7 +14,6 @@ const StartPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    
     firebase.getPokemonSoket((pokemons) => {
       setPokemons(pokemons);
     });

@@ -22,7 +22,6 @@
   transform: rotateY(180deg);
   max-width: 268px;
   max-height: 388px;
-  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -40,8 +39,8 @@
 }
 
 .pokemonCard.selected {
-  margin-top: -40px;
-  margin-bottom: 40px;
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 
 .cardFront,

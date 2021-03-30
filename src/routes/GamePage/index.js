@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const GamePage = () => {
   const [selectedPokemons, setSelectedPokemons] = useState({});
+  const [gameStatus, setGameStatus] = useState(null);
   const [receivedPlayer2Pokemons, setReceivedPlayer2Pokemons] = useState({});
 
   const match = useRouteMatch();
@@ -35,10 +36,15 @@ const GamePage = () => {
     });
   };
 
+  const handleSetWin = (status) => {
+    setGameStatus(status);
+  };
+
   const handleClearContext = () => {
     setSelectedPokemons({});
-    setReceivedPlayer2Pokemons({})
-  }
+    setReceivedPlayer2Pokemons({});
+    setGameStatus(null);
+  };
   return (
     <PokemonContext.Provider
       value={{
@@ -47,6 +53,8 @@ const GamePage = () => {
         player2Pokemons: receivedPlayer2Pokemons,
         onReceivePokemons: handleReceivedPokemon,
         onClearContext: handleClearContext,
+        isWin: gameStatus,
+        onWin: handleSetWin,
       }}
     >
       <Switch>
