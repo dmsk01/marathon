@@ -1,17 +1,34 @@
 .flex {
+  margin: 30px 0px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  min-height: 100%;
-  height: 100vh;
+  width: 100%;
 }
-.gameHeader {
-  margin: 30px 0px;
+.flex > * {
+  margin: 0 10px;
+}
+
+.endGame {
+  font-size: 20px;
+}
+
+.endGame p {
+  margin: 0px 0px 20px 0px;
+}
+
+.wrapper {
   text-align: center;
 }
 
-.gameHeader p {
-  font-size: 32px;
-  margin: 0px 0px 30px 0px;
+.card {
+  width: 100%;
+  height: 380px;
+  align-self: center;
+  justify-self: center;
+}
+
+.pokemonCard.selected {
+  margin-top: -40px;
+  margin-bottom: 40px;
 }
