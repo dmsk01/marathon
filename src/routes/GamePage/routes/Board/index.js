@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import PokemonCard from "../../../../components/PokemonCard";
 import Result from "../../../../components/Result";
+import ArrowChoice from "../../../../components/ArrowChoice";
 import { PokemonContext } from "../../../../context/pokemonContext";
 import PlayerBoard from "./component/PlayerBoard";
 import s from "./style.module.css";
@@ -41,6 +42,8 @@ const BoardPage = () => {
   const [chosenCard, setChosenCard] = useState(null);
   const [steps, setSteps] = useState(0);
   const [type, setType] = useState(null);
+  const [turn, setTurn] = useState(0);
+  const [isStopped, setStopped] = useState(false);
 
   const history = useHistory();
 
@@ -50,6 +53,7 @@ const BoardPage = () => {
 
   const handlerClickBoardPlate = async (position) => {
     if (chosenCard) {
+      setTurn(turn === 1 ? 2 : 1);
       const params = {
         position,
         card: chosenCard,
@@ -77,7 +81,33 @@ const BoardPage = () => {
       }
 
       setSteps((prevState) => prevState + 1);
+
+      setChosenCard(null);
     }
+  };
+
+  // const handleChosenCard = (card,turn,player) => {
+  //   if (turn !== player) {
+  //     return
+  //   }
+  //     setChosenCard(card)
+  // }
+
+  const randomTurn = () => {
+    const player = Math.random().toFixed(1) > 0.5 ? 1 : 2;
+    setTimeout(() => {
+      switch (player) {
+        case 1:
+          setTurn(1);
+          break;
+        case 2:
+          setTurn(2);
+          break;
+        default:
+          setTurn(0);
+      }
+      setStopped(true);
+    }, 2000);
   };
 
   useEffect(async () => {
@@ -102,6 +132,8 @@ const BoardPage = () => {
     }, {});
 
     pokemonsContext.onReceivePokemons(secondPlayerCards);
+
+    randomTurn();
   }, []);
 
   useEffect(() => {
@@ -128,12 +160,13 @@ const BoardPage = () => {
   return (
     <div className={s.root}>
       {type && <Result type={type} />}
+      <ArrowChoice side={turn} stop={isStopped} />
       <div className={s.playerOne}>
         <PlayerBoard
           player={1}
           cards={player1}
           onClickCard={(card) => {
-            setChosenCard(card);
+            turn === 1 && setChosenCard(card);
           }}
         />
       </div>
@@ -155,7 +188,7 @@ const BoardPage = () => {
           player={2}
           cards={player2}
           onClickCard={(card) => {
-            setChosenCard(card);
+            turn === 2 && setChosenCard(card);
           }}
         />
       </div>
