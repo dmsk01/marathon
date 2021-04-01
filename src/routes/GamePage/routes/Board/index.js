@@ -86,13 +86,6 @@ const BoardPage = () => {
     }
   };
 
-  // const handleChosenCard = (card,turn,player) => {
-  //   if (turn !== player) {
-  //     return
-  //   }
-  //     setChosenCard(card)
-  // }
-
   const randomTurn = () => {
     const player = Math.random().toFixed(1) > 0.5 ? 1 : 2;
     setTimeout(() => {

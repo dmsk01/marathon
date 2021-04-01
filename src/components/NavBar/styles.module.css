@@ -31,6 +31,7 @@
   height: 22px;
   width: 30px;
   outline: none;
+  cursor: pointer;
 }
 
 .menuButton span,
@@ -84,4 +85,32 @@
   #navbar {
     background: #181d23aa;
   }
+}
+
+/* Login ======== */
+
+.loginAndMenu {
+  display: flex;
+}
+
+.loginWrap {
+  width: 22px;
+  height: 22px;
+  margin: 0px 30px 0px 0px;
+  cursor: pointer;
+}
+
+.loginWrap svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(3px 3px 5px rgb(0, 0, 0));
+}
+
+.loginWrap svg g {
+  fill: white;
+  transition: all 0.3s ease 0s;
+}
+
+.loginWrap:hover svg g {
+  fill: #f300b4;
 }
