@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { NotificationManager } from "react-notifications";
 
-import { LoginContext } from "../../context/loginContext";
-
 import Menu from "../Menu";
 import Modal from "../Modal";
 import NavBar from "../NavBar";
@@ -41,13 +39,11 @@ const MenuHeader = ({ bgActive }) => {
 
   return (
     <>
-      <LoginContext.Provider>
-        <NavBar onClick={handleClick} onClickLogin={handleClickLogin} isActive={isActive} bgActive={bgActive} />
-        <Menu isActive={isActive} onClick={handleClick} />
-        <Modal isOpen={isOpenModal} title="Log in ->" onCloseModal={handleClickLogin}>
-          <LoginForm onSubmit={handleSubmitLoginForm} />
-        </Modal>
-      </LoginContext.Provider>
+      <Menu isActive={isActive} onClick={handleClick} />
+      <NavBar onClick={handleClick} onClickLogin={handleClickLogin} isActive={isActive} bgActive={bgActive} />
+      <Modal isOpen={isOpenModal} title="Log in" onCloseModal={handleClickLogin}>
+        <LoginForm isOpenModal={isOpenModal} onSubmit={handleSubmitLoginForm} />
+      </Modal>
     </>
   );
 };

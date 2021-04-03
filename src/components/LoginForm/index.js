@@ -1,17 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Input from "../Input";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, isOpenModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleResetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit && onSubmit({ email, password });
-    setEmail("");
-    setPassword("");
+    handleResetForm();
   };
+
+  useEffect(() => {
+    handleResetForm();
+  }, [isOpenModal]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -21,7 +29,6 @@ const LoginForm = ({ onSubmit }) => {
           value={email}
           type="text"
           name="email"
-          placeholder="Enter email"
           onChange={(event) => {
             setEmail(event.target.value);
           }}
@@ -33,7 +40,6 @@ const LoginForm = ({ onSubmit }) => {
           value={password}
           type="password"
           name="password"
-          placeholder="Enter password"
           onChange={(event) => {
             setPassword(event.target.value);
           }}
