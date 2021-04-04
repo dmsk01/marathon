@@ -18,7 +18,7 @@ const MenuHeader = ({ bgActive }) => {
     setOpenModal((prevState) => !prevState);
   };
 
-  const handleSubmitLoginForm = async ({ email, password }) => {
+  const handleSubmitLoginForm = async ({ email, password, isSignIn }) => {
     const requestOptions = {
       method: "POST",
       body: JSON.stringify({
@@ -27,13 +27,22 @@ const MenuHeader = ({ bgActive }) => {
         returnSecureToken: true,
       }),
     };
-    const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAux8IGOJZFxByxV9jY66v2raWg2Xk7vk8", requestOptions).then((res) => res.json());
+
+    const sighUpUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAux8IGOJZFxByxV9jY66v2raWg2Xk7vk8";
+    const sighInUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAux8IGOJZFxByxV9jY66v2raWg2Xk7vk8";
+
+    const urlToFetch = isSignIn ? sighInUrl : sighUpUrl;
+
+    const messageToNotify = isSignIn ? "You successfully logged in!" : "Congratulations! Your account has been successfully created.";
+
+    const response = await fetch(urlToFetch, requestOptions).then((res) => res.json());
 
     if (response.hasOwnProperty("error")) {
       NotificationManager.error(response.error.message, "Correct your data!");
     } else {
       localStorage.setItem("idToken", response.idToken);
-      NotificationManager.success("You successfully logged in");
+      NotificationManager.success(messageToNotify);
+      handleClickLogin();
     }
   };
 

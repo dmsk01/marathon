@@ -36,7 +36,7 @@ const App = () => {
                 <Route path="/" exact component={HomePage} />
                 <PrivateRoute path="/game" component={GamePage} />
                 <PrivateRoute path="/about" component={AboutPage} />
-                <Route path="/contact" component={ContactPage} />
+                <PrivateRoute path="/contact" component={ContactPage} />
                 <Route render={() => <Redirect to="/404" />} />
               </Switch>
             </div>

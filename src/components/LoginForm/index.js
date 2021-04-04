@@ -5,15 +5,21 @@ import Input from "../Input";
 const LoginForm = ({ onSubmit, isOpenModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSignIn, setSignIn] = useState(true);
 
   const handleResetForm = () => {
     setEmail("");
     setPassword("");
   };
 
+  const handleChangeUrlToFetch = (event) => {
+    event.preventDefault();
+    setSignIn((prevState) => !prevState);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit && onSubmit({ email, password });
+    onSubmit && onSubmit({ email, password, isSignIn });
     handleResetForm();
   };
 
@@ -45,7 +51,10 @@ const LoginForm = ({ onSubmit, isOpenModal }) => {
           }}
         />
       </div>
-      <button>Login</button>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <button>{isSignIn ? "Signin" : "Signup"}</button>
+        <button onClick={handleChangeUrlToFetch}>{isSignIn ? "Register" : "Login"}</button>
+      </div>
     </form>
   );
 };
