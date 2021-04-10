@@ -42,7 +42,7 @@ const StartPage = () => {
   return (
     <>
       <div className={styles.gameHeader}>
-        <p>Choose the card!!!</p>
+        <p>Choose 5 cards!!!</p>
       </div>
       <div className={styles.buttonWrap}>
         <button disabled={Object.keys(pokemonContext.pokemons).length < 5} onClick={handleStartGameClick}>
