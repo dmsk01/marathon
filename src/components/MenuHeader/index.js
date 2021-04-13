@@ -40,6 +40,18 @@ const MenuHeader = ({ bgActive }) => {
     if (response.hasOwnProperty("error")) {
       NotificationManager.error(response.error.message, "Correct your data!");
     } else {
+      if (!isSignIn) {
+        //if Sing up mode we should give a starter pokemons set to a new user
+        console.log("register");
+        const pokemonStart = await fetch("https://reactmarathon-api.herokuapp.com/api/pokemons/starter").then((res) => res.json());
+
+        for (const item of pokemonStart.data) {
+          await fetch(`https://pokemon-game-7a8f8-default-rtdb.europe-west1.firebasedatabase.app/${response.localId}/pokemons.json?auth=${response.idToken}`, {
+            method: "POST",
+            body: JSON.stringify(item),
+          });
+        }
+      }
       localStorage.setItem("idToken", response.idToken);
       NotificationManager.success(messageToNotify);
       handleClickLogin();
